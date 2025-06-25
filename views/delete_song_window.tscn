@@ -1,0 +1,51 @@
+[gd_scene load_steps=2 format=3 uid="uid://hmjejfiwtjup"]
+
+[ext_resource type="Script" uid="uid://cnjktc6180tmt" path="res://views/delete_song_window.gd" id="1_ug37n"]
+
+[node name="DeleteSongWindow" type="Window"]
+auto_translate_mode = 1
+title = "Delete Song?"
+initial_position = 2
+size = Vector2i(380, 160)
+script = ExtResource("1_ug37n")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"PanelContainerDefaultFlat"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Are you sure you want to delete this song?"
+horizontal_alignment = 1
+
+[node name="SongDetailLabel" type="Label" parent="PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+text = "Song Title: 歌名
+Artist: 没名字"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ConfirmButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"ButtonPrimary"
+text = "Confirm"
+
+[node name="CancelButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "No"

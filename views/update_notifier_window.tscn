@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://b64xaey03odnt"]
+
+[ext_resource type="Script" uid="uid://iytvyaenqgdg" path="res://views/update_notifier_window.gd" id="1_ewawe"]
+
+[node name="UpdateNotifierWindow" type="Window"]
+title = "New Version Available"
+initial_position = 2
+size = Vector2i(280, 160)
+script = ExtResource("1_ewawe")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="DialogTextLabel" type="Label" parent="PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+text = "Dialog Text"
+
+[node name="ConfirmButton" type="Button" parent="PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Confirm"

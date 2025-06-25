@@ -1,0 +1,164 @@
+[gd_scene load_steps=6 format=3 uid="uid://dxq82q4s5bep2"]
+
+[ext_resource type="Texture2D" uid="uid://c6qfbleqag2cj" path="res://assets/search.svg" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://dof6osxgniiv3" path="res://main.gd" id="1_h2yge"]
+[ext_resource type="Texture2D" uid="uid://c7rqkiptun7g6" path="res://assets/add.svg" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://hmjejfiwtjup" path="res://views/delete_song_window.tscn" id="4_1bvp3"]
+[ext_resource type="Script" uid="uid://ct1mb1gymr2fv" path="res://views/update_checker.gd" id="5_lquwl"]
+
+[node name="PanelContainer" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_h2yge")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 2
+
+[node name="SongList" type="PanelContainer" parent="HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.5
+theme_type_variation = &"PanelContainerDefaultFlat"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/SongList"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/SongList/VBoxContainer"]
+layout_mode = 2
+
+[node name="ProgramTitleLabel" type="Label" parent="HSplitContainer/SongList/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+theme_override_colors/font_outline_color = Color(0.4, 0.4, 0.4, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 24
+text = "Song Manager"
+
+[node name="SearchSongLineEdit" type="LineEdit" parent="HSplitContainer/SongList/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Search Songs"
+clear_button_enabled = true
+right_icon = ExtResource("1_0xm2m")
+
+[node name="SearchSongOptionButton" type="OptionButton" parent="HSplitContainer/SongList/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+item_count = 3
+popup/item_0/text = "Title"
+popup/item_0/id = 0
+popup/item_1/text = "Artist"
+popup/item_1/id = 1
+popup/item_2/text = "Genre"
+popup/item_2/id = 2
+
+[node name="AddSongButton" type="Button" parent="HSplitContainer/SongList/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ButtonPrimaryPlain"
+text = "Add Song"
+icon = ExtResource("1_ig7tw")
+
+[node name="SongTree" type="Tree" parent="HSplitContainer/SongList/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+columns = 4
+column_titles_visible = true
+allow_reselect = true
+hide_folding = true
+hide_root = true
+select_mode = 1
+
+[node name="SongDetails" type="PanelContainer" parent="HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"PanelContainerDefaultFlat"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/SongDetails"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SongTitleLabel" type="Label" parent="HSplitContainer/SongDetails/VBoxContainer"]
+layout_mode = 2
+text = "Title"
+
+[node name="SongTitleLineEdit" type="LineEdit" parent="HSplitContainer/SongDetails/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+clear_button_enabled = true
+
+[node name="SongArtistLabel" type="Label" parent="HSplitContainer/SongDetails/VBoxContainer"]
+layout_mode = 2
+text = "Artist"
+
+[node name="SongArtistLineEdit" type="LineEdit" parent="HSplitContainer/SongDetails/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+clear_button_enabled = true
+
+[node name="SongLyricLabel" type="Label" parent="HSplitContainer/SongDetails/VBoxContainer"]
+layout_mode = 2
+text = "Lyric"
+
+[node name="SongLyricLineEdit" type="LineEdit" parent="HSplitContainer/SongDetails/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SongGenreLabel" type="Label" parent="HSplitContainer/SongDetails/VBoxContainer"]
+layout_mode = 2
+text = "Genre"
+
+[node name="SongGenreLineEdit" type="LineEdit" parent="HSplitContainer/SongDetails/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+clear_button_enabled = true
+
+[node name="SongRemarkLabel" type="Label" parent="HSplitContainer/SongDetails/VBoxContainer"]
+layout_mode = 2
+text = "Remarks"
+
+[node name="SongRemarkTextEdit" type="TextEdit" parent="HSplitContainer/SongDetails/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SongLinkLabel" type="Label" parent="HSplitContainer/SongDetails/VBoxContainer"]
+layout_mode = 2
+text = "Link"
+
+[node name="SongLinkLineEdit" type="LineEdit" parent="HSplitContainer/SongDetails/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/SongDetails/VBoxContainer"]
+layout_mode = 2
+
+[node name="SaveButton" type="Button" parent="HSplitContainer/SongDetails/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"ButtonPrimary"
+text = "Save"
+
+[node name="CancelButton" type="Button" parent="HSplitContainer/SongDetails/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Cancel"
+
+[node name="DeleteSongWindow" parent="." instance=ExtResource("4_1bvp3")]
+unique_name_in_owner = true
+visible = false
+
+[node name="UpdateChecker" type="Node" parent="."]
+script = ExtResource("5_lquwl")
+metadata/_custom_type_script = "uid://ct1mb1gymr2fv"
