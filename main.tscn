@@ -102,6 +102,7 @@ text = "Add Song"
 icon = ExtResource("1_ig7tw")
 
 [node name="SongTitleLabel" type="Label" parent="VBoxContainer/HSplitContainer/SongDetails/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Title"
 
@@ -112,6 +113,7 @@ clear_button_enabled = true
 caret_blink = true
 
 [node name="SongArtistLabel" type="Label" parent="VBoxContainer/HSplitContainer/SongDetails/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Artist"
 
@@ -132,6 +134,7 @@ clear_button_enabled = true
 caret_blink = true
 
 [node name="SongGenreLabel" type="Label" parent="VBoxContainer/HSplitContainer/SongDetails/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Genre"
 

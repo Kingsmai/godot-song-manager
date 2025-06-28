@@ -7,6 +7,14 @@ extends PanelContainer
 
 @onready var song_tree: Tree = %SongTree
 
+var song_title_label_text: String
+var song_artist_label_text: String
+var song_genre_label_text: String
+
+@onready var song_title_label: Label = %SongTitleLabel
+@onready var song_artist_label: Label = %SongArtistLabel
+@onready var song_genre_label: Label = %SongGenreLabel
+
 @onready var song_title_line_edit: LineEdit = %SongTitleLineEdit
 @onready var song_artist_line_edit: LineEdit = %SongArtistLineEdit
 @onready var song_lyric_line_edit: LineEdit = %SongLyricLineEdit
@@ -34,12 +42,32 @@ enum State {
 	EDIT_SONG
 }
 
-var state := State.ADD_SONG
+var state := State.ADD_SONG:
+	set(value):
+		state = value
+		match value:
+			State.EDIT_SONG:
+				save_button.text = "Update"
+				save_button.theme_type_variation = "ButtonSuccess"
+				cancel_button.text = "Delete"
+				cancel_button.theme_type_variation = "ButtonDanger"
+				song_title_label.text = song_title_label_text
+				song_artist_label.text = song_artist_label_text
+				song_genre_label.text = song_genre_label_text
+			State.ADD_SONG:
+				save_button.text = "Save"
+				save_button.theme_type_variation = "ButtonPrimary"
+				cancel_button.text = "Cancel"
+				cancel_button.theme_type_variation = ""
+				song_title_label.text = song_title_label.text + " (Searchable)"
+				song_artist_label.text = song_artist_label.text + " (Searchable)"
+				song_genre_label.text = song_genre_label.text + " (Searchable)"
 var sort_by := Song.SortBy.NONE
 var sort_dir := Song.SortDir.NONE
 
 func _on_add_song_button_pressed() -> void:
 	_clear_fields()
+	load_song_tree()
 
 func _on_save_button_pressed() -> void:
 	var song = Song.new()
@@ -82,10 +110,6 @@ func _on_song_tree_item_selected() -> void:
 		song_genre_line_edit.text = selected_song.song_genre
 		song_remark_text_edit.text = selected_song.song_remark
 		song_link_line_edit.text = selected_song.song_link
-	save_button.text = "Update"
-	save_button.theme_type_variation = "ButtonSuccess"
-	cancel_button.text = "Delete"
-	cancel_button.theme_type_variation = "ButtonDanger"
 	state = State.EDIT_SONG
 
 func _on_song_tree_column_title_clicked(column: int, mouse_button_index: int) -> void:
@@ -169,6 +193,10 @@ func _ready() -> void:
 	cancel_button.pressed.connect(_on_cancel_button_pressed)
 	delete_song_window.confirmed.connect(_on_delete_song_window_confirmed)
 	_setup_window_control()
+	song_title_label_text = song_title_label.text
+	song_artist_label_text = song_artist_label.text
+	song_genre_label_text = song_genre_label.text
+	state = State.ADD_SONG
 
 func _set_song_tree_node(song_node: TreeItem, song: Song) -> void:
 	song_node.set_text(0, song.song_title)
@@ -186,10 +214,6 @@ func _clear_fields() -> void:
 	song_remark_text_edit.text = ""
 	song_link_line_edit.text = ""
 	song_tree.deselect_all()
-	save_button.text = "Save"
-	save_button.theme_type_variation = "ButtonPrimary"
-	cancel_button.text = "Cancel"
-	cancel_button.theme_type_variation = ""
 	state = State.ADD_SONG
 
 func _on_window_title_gui_input(event: InputEvent) -> void:
