@@ -2,7 +2,7 @@
 
 一个基于 Godot 引擎开发的 **本地化音乐信息管理工具**，用于记录和检索你最爱的歌曲信息，支持拼音搜索、逻辑字段筛选、软删除等功能。
 
-![Demo](./doc/preview.png)
+![Demo](./doc/preview1.1.0.0.png)
 
 本项目使用 [Godot SQLite 插件](https://godotengine.org/asset-library/asset/1686) 存储数据，界面采用 [Kenney UI Pack](https://www.kenney.nl/assets/ui-pack) 构建，兼具实用性与美观性 💡
 
@@ -26,6 +26,7 @@
 |---------------------|----------|----------------------------------------------------------------------|
 | Godot SQLite Plugin | 插件       | [Godot Asset #1686](https://godotengine.org/asset-library/asset/1686) |
 | Kenney UI Pack      | UI 素材包   | [Kenney.nl](https://www.kenney.nl/assets/ui-pack)                   |
+| 商务常用 基础图标      | Icon      | [IconFont](https://www.iconfont.cn/collections/detail?cid=18982)    |
 
 ---
 

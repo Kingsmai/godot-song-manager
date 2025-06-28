@@ -7,6 +7,19 @@ enum SearchScope {
 	SONG_GENRE
 }
 
+enum SortBy {
+	NONE,
+	SONG_TITLE,
+	SONG_ARTIST,
+	SONG_GENRE
+}
+
+enum SortDir {
+	NONE,
+	ASC,
+	DESC
+}
+
 var song_id            : int
 ## 歌名
 var song_title         : String:

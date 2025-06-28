@@ -1,8 +1,7 @@
 @tool
 extends PanelContainer
 
-@onready var search_song_line_edit: LineEdit = %SearchSongLineEdit
-@onready var search_song_option_button: OptionButton = %SearchSongOptionButton
+@onready var window_title: PanelContainer = %WindowTitle
 
 @onready var add_song_button: Button = %AddSongButton
 
@@ -19,9 +18,16 @@ extends PanelContainer
 @onready var cancel_button: Button = %CancelButton
 
 @onready var delete_song_window: DeleteSongWindow = %DeleteSongWindow
-
 #@export_tool_button("Dev Refresh", "res://assets/flag.svg")
 #var editor_dev_refresh_btn = dev_refresh
+
+# Window Controls
+@onready var exit_button: Button = %ExitButton
+@onready var maximize_button: Button = %MaximizeButton
+@onready var restore_button: Button = %RestoreButton
+@onready var minimize_button: Button = %MinimizeButton
+
+const DELETE_ICON = preload("res://assets/delete.svg")
 
 enum State {
 	ADD_SONG,
@@ -29,6 +35,8 @@ enum State {
 }
 
 var state := State.ADD_SONG
+var sort_by := Song.SortBy.NONE
+var sort_dir := Song.SortDir.NONE
 
 func _on_add_song_button_pressed() -> void:
 	_clear_fields()
@@ -80,24 +88,40 @@ func _on_song_tree_item_selected() -> void:
 	cancel_button.theme_type_variation = "ButtonDanger"
 	state = State.EDIT_SONG
 
-func _on_search_song_line_edit_text_changed(new_text: String):
-	var search_scope = search_song_option_button.get_selected_id()
-	load_song_tree(new_text, search_scope)
+func _on_song_tree_column_title_clicked(column: int, mouse_button_index: int) -> void:
+	var clicked_sort_by := Song.SortBy.NONE
+	# Column 1: Title
+	# Column 2: Artist
+	# Column 3: Genre
+	match column:
+		0:
+			clicked_sort_by = Song.SortBy.SONG_TITLE
+		1:
+			clicked_sort_by = Song.SortBy.SONG_ARTIST
+		2:
+			clicked_sort_by = Song.SortBy.SONG_GENRE
+		_:
+			return
+	# 状态切换逻辑
+	if sort_by == clicked_sort_by:
+		match sort_dir:
+			Song.SortDir.NONE:
+				sort_dir = Song.SortDir.ASC
+			Song.SortDir.ASC:
+				sort_dir = Song.SortDir.DESC
+			Song.SortDir.DESC:
+				sort_by = Song.SortBy.NONE
+				sort_dir = Song.SortDir.NONE
+	else:
+		sort_by = clicked_sort_by
+		sort_dir = Song.SortDir.ASC
+	# When sort by Artist and Genre, will sort title too
+	load_song_tree()
 
 ## 作用于【新增歌曲时】，歌名 / 歌手 / 曲风 输入框被编辑时。左侧列表会实时显示，
 ## 提醒用户这首歌是否被添加过
 func _on_song_details_edited(_new_song: String) -> void:
-	if state == State.EDIT_SONG: return
-	song_tree.clear()
-	var songs = Database.query_songs_by_fields(
-		song_title_line_edit.text,
-		song_artist_line_edit.text,
-		song_genre_line_edit.text
-	)
-	var root = song_tree.create_item()
-	for song in songs:
-		var song_node = root.create_child()
-		_set_song_tree_node(song_node, song)
+	load_song_tree()
 
 func song_tree_setup() -> void:
 	song_tree.set_column_title(0, "Title")
@@ -111,20 +135,18 @@ func song_tree_undo_setup() -> void:
 	song_tree.set_column_title(2, "")
 	song_tree.set_column_title(3, "")
 
-func load_song_tree(search_pattern: String = "", search_scope: Song.SearchScope = Song.SearchScope.SONG_TITLE) -> void:
+func load_song_tree() -> void:
 	song_tree.clear()
-	var songs = Database.get_songs(search_pattern, search_scope)
+	var songs = Database.get_songs(
+		sort_by, sort_dir,
+		song_title_line_edit.text,
+		song_artist_line_edit.text,
+		song_genre_line_edit.text
+	)
 	var root = song_tree.create_item()
 	for song in songs:
 		var song_node = root.create_child()
 		_set_song_tree_node(song_node, song)
-
-func setup_search_scope_option_button() -> void:
-	search_song_option_button.clear()
-	for search_scope: String in Song.SearchScope:
-		var item = search_scope.split("_")[1].capitalize() if search_scope.contains("_") else search_scope.capitalize()
-		search_song_option_button.add_item(item)
-
 ### DEGUG: 开发时用的，点击 Dev Refresh 按钮后，设置 Tree 列表名
 #func dev_refresh():
 	## Set tree column title
@@ -140,19 +162,20 @@ func _ready() -> void:
 	save_button.pressed.connect(_on_save_button_pressed)
 	load_song_tree()
 	song_tree.item_selected.connect(_on_song_tree_item_selected)
-	setup_search_scope_option_button()
-	search_song_line_edit.text_changed.connect(_on_search_song_line_edit_text_changed)
+	song_tree.column_title_clicked.connect(_on_song_tree_column_title_clicked)
 	song_title_line_edit.text_changed.connect(_on_song_details_edited)
 	song_artist_line_edit.text_changed.connect(_on_song_details_edited)
 	song_genre_line_edit.text_changed.connect(_on_song_details_edited)
 	cancel_button.pressed.connect(_on_cancel_button_pressed)
 	delete_song_window.confirmed.connect(_on_delete_song_window_confirmed)
+	_setup_window_control()
 
 func _set_song_tree_node(song_node: TreeItem, song: Song) -> void:
 	song_node.set_text(0, song.song_title)
 	song_node.set_text(1, song.song_artist)
 	song_node.set_text(2, song.song_genre)
 	song_node.set_text(3, song.song_remark)
+	song_node.add_button(3, DELETE_ICON)
 	song_node.set_metadata(0, song.song_id)
 
 func _clear_fields() -> void:
@@ -168,3 +191,48 @@ func _clear_fields() -> void:
 	cancel_button.text = "Cancel"
 	cancel_button.theme_type_variation = ""
 	state = State.ADD_SONG
+
+func _on_window_title_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.double_click:
+			if get_window().mode == Window.MODE_MAXIMIZED:
+				get_window().mode = Window.MODE_WINDOWED
+				maximize_button.show()
+				restore_button.hide()
+			else:
+				get_window().mode = Window.MODE_MAXIMIZED
+				restore_button.show()
+				maximize_button.hide()
+		elif event.pressed:
+			get_window().start_drag()
+
+## 无边框窗口
+func _setup_window_control() -> void:
+	window_title.gui_input.connect(_on_window_title_gui_input)
+	
+	exit_button.pressed.connect(func():
+		var tween := create_tween()
+		tween.tween_property(self, "modulate:a", 0.0, 0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+		tween.tween_callback(func(): get_tree().quit())
+	)
+
+	maximize_button.pressed.connect(func():
+		get_window().mode = Window.MODE_MAXIMIZED
+		restore_button.show()
+		maximize_button.hide()
+	)
+
+	restore_button.pressed.connect(func():
+		get_window().mode = Window.MODE_WINDOWED
+		maximize_button.show()
+		restore_button.hide()
+	)
+
+	minimize_button.pressed.connect(func():
+		var tween := create_tween()
+		tween.tween_property(self, "modulate:a", 0.0, 0.2)
+		tween.tween_callback(func():
+			get_window().mode = Window.MODE_MINIMIZED
+			self.modulate.a = 1.0  # 恢复时立即可见
+		)
+	)

@@ -38,53 +38,38 @@ func create_song_table() -> void:
 	}
 	db.create_table(SONGS_TABLE_NAME, song_table_dict)
 
-func get_songs(search_pattern: String = "", search_scope: Song.SearchScope = Song.SearchScope.SONG_TITLE) -> Array[Song]:
-	var result: Array
-	if search_pattern.strip_edges().is_empty():
-		result = db.select_rows(SONGS_TABLE_NAME, "deleted != 1", ["*"])
-	else:
-		var pattern := "%%%s%%" % search_pattern  # 安全拼接通配符
-		var condition: String = "deleted != 1 AND "
-		match search_scope:
-			Song.SearchScope.SONG_TITLE:
-				condition = "song_title LIKE '%s' OR song_title_pinyin LIKE '%s'" % [pattern, pattern]
-			Song.SearchScope.SONG_ARTIST:
-				condition = "song_artist LIKE '%s' OR song_artist_pinyin LIKE '%s'" % [pattern, pattern]
-			Song.SearchScope.SONG_GENRE:
-				condition = "song_genre LIKE '%s' OR song_genre_pinyin LIKE '%s'" % [pattern, pattern]
-		result = db.select_rows(SONGS_TABLE_NAME, condition, ["*"])
-	var songs: Array[Song] = []
-	for row in result:
-		songs.append(Song.from_dict(row))
-	return songs
-
-func query_songs_by_fields(song_title: String = "", song_artist: String = "", song_genre: String = "") -> Array[Song]:
-	var conditions: Array[String] = []
-	# 拼接 song_title 条件
+func get_songs(sort_by: Song.SortBy = Song.SortBy.NONE, sort_dir: Song.SortDir = Song.SortDir.NONE, song_title: String = "", song_artist: String = "", song_genre: String = "") -> Array[Song]:
+	var query := "SELECT * FROM %s WHERE deleted != 1" % SONGS_TABLE_NAME
 	if not song_title.strip_edges().is_empty():
 		var pattern := "%%%s%%" % song_title.strip_edges()
-		conditions.append("(song_title LIKE '%s' OR song_title_pinyin LIKE '%s')" % [pattern, pattern])
-	# 拼接 song_artist 条件
+		query += " AND (song_title LIKE '%s' OR song_title_pinyin LIKE '%s')" % [pattern, pattern]
 	if not song_artist.strip_edges().is_empty():
 		var pattern := "%%%s%%" % song_artist.strip_edges()
-		conditions.append("(song_artist LIKE '%s' OR song_artist_pinyin LIKE '%s')" % [pattern, pattern])
-	# 拼接 song_genre 条件
+		query += " AND (song_artist LIKE '%s' OR song_artist_pinyin LIKE '%s')" % [pattern, pattern]
 	if not song_genre.strip_edges().is_empty():
 		var pattern := "%%%s%%" % song_genre.strip_edges()
-		conditions.append("(song_genre LIKE '%s' OR song_genre_pinyin LIKE '%s')" % [pattern, pattern])
-	# 合并 WHERE 子句
-	var where_clause := "deleted != 1"
-	if conditions.size() > 0:
-		where_clause += " AND "
-		where_clause += " AND ".join(conditions)
-	# 查询数据库
-	var result := db.select_rows(SONGS_TABLE_NAME, where_clause, ["*"])
-	# 转换为 Song 对象
+		query += " AND (song_genre LIKE '%s' OR song_genre_pinyin LIKE '%s')" % [pattern, pattern]
+	if sort_by != Song.SortBy.NONE:
+		match sort_by:
+			Song.SortBy.SONG_TITLE:
+				query += " ORDER BY song_title"
+			Song.SortBy.SONG_ARTIST:
+				query += " ORDER BY song_artist"
+			Song.SortBy.SONG_GENRE:
+				query += " ORDER BY song_genre"
+		if sort_dir != Song.SortDir.NONE:
+			match sort_dir:
+				Song.SortDir.ASC:
+					query += " ASC"
+				Song.SortDir.DESC:
+					query += " DESC"
+	var result = db.query(query)
+	if not result:
+		return []
 	var songs: Array[Song] = []
-	for row in result:
+	for row in db.query_result:
 		songs.append(Song.from_dict(row))
 	return songs
-
 
 func add_song(new_song: Song) -> bool:
 	return db.insert_row(SONGS_TABLE_NAME, new_song.to_dict())

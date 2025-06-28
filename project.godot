@@ -11,15 +11,24 @@ config_version=5
 [application]
 
 config/name="Godot Song Manager"
-config/version="1.0.0.0"
+config/version="1.1.0.0"
 run/main_scene="uid://dxq82q4s5bep2"
 config/features=PackedStringArray("4.4", "GL Compatibility")
+boot_splash/show_image=false
+boot_splash/fullsize=false
+boot_splash/use_filter=false
 config/icon="res://icon.svg"
 
 [autoload]
 
 Pinyin="*res://global/pinyin_module/pinyin.gd"
 Database="*res://global/database.gd"
+
+[display]
+
+window/size/borderless=true
+window/size/transparent=true
+window/per_pixel_transparency/allowed=true
 
 [dotnet]
 
