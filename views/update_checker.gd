@@ -16,7 +16,7 @@ func _ready() -> void:
 	if error != OK:
 		push_error("HTTP 请求失败")
 
-func _on_request_completed(result, response_code, headers, body):
+func _on_request_completed(result, _response_code, _headers, body):
 	if result != HTTPRequest.RESULT_SUCCESS:
 		return
 		

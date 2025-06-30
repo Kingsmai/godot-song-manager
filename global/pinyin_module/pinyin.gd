@@ -3,8 +3,8 @@ extends Node
 var pinyin_dict: Dictionary = {}
 
 func remove_multiple_characters(input_string: String, chars_to_remove: String) -> String:
-	for char in chars_to_remove:
-		input_string = input_string.replace(char, "")
+	for c in chars_to_remove:
+		input_string = input_string.replace(c, "")
 	return input_string
 
 func remove_tone(pinyin: String) -> String:

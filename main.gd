@@ -112,7 +112,7 @@ func _on_song_tree_item_selected() -> void:
 		song_link_line_edit.text = selected_song.song_link
 	state = State.EDIT_SONG
 
-func _on_song_tree_column_title_clicked(column: int, mouse_button_index: int) -> void:
+func _on_song_tree_column_title_clicked(column: int, _mouse_button_index: int) -> void:
 	var clicked_sort_by := Song.SortBy.NONE
 	# Column 1: Title
 	# Column 2: Artist

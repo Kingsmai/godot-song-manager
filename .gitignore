@@ -6,3 +6,5 @@
 ./bin/
 
 *.tmp
+
+addons/godot-sqlite/bin/~*.*
