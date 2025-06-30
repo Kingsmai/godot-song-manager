@@ -1,3 +1,4 @@
+@tool
 extends PanelContainer
 
 """
@@ -15,8 +16,12 @@ extends PanelContainer
 		window_min_size = value
 		if is_node_ready():
 			window_resize_component.min_size = window_min_size
+@export var program_title: String:
+	set(value):
+		program_title = value
+		%ProgramTitleLabel.text = value
 
-@onready var texture_rect_window_icon = %TextureRectWindowIcon
+@onready var program_title_label: Label = %ProgramTitleLabel
 
 @onready var exit_button: Button = %ExitButton
 @onready var maximize_button: Button = %MaximizeButton
@@ -30,17 +35,30 @@ extends PanelContainer
 func _ready():
 	window_min_size = window_min_size
 	minimize_button.pressed.connect(window_state_component.set_minimized)
-	maximize_button.pressed.connect(window_state_component.toggle_maximized)
+	maximize_button.pressed.connect(_on_maximize_button_pressed)
+	restore_button.pressed.connect(_on_restore_button_pressed)
 	exit_button.pressed.connect(window_state_component.quit)
 	
 	window_drag_component.drag_started.connect(func(): window_resize_component.activate = false)
 	window_drag_component.drag_stoped.connect(func(): window_resize_component.activate = true)
+	
+	program_title_label.text = LocalizationManager.tr("PROGRAM_TITLE")
 
 # func _process(delta):
 # 	var is_resize = window_resize_component.is_waiting_resize() or window_resize_component.is_resizing()
 # 	minimize_button.disabled = is_resize
 # 	maximize_button.disabled = is_resize
 # 	exit_button.disabled = is_resize
+
+func _on_maximize_button_pressed():
+	restore_button.show()
+	maximize_button.hide()
+	window_state_component.toggle_maximized()
+
+func _on_restore_button_pressed():
+	restore_button.hide()
+	maximize_button.show()
+	window_state_component.set_windowed()
 
 func _input(event):
 	if event is InputEventMouseButton:
@@ -66,6 +84,9 @@ func _notification(what):
 			window_resize_component.stop_resize()
 		if window_drag_component.is_dragging():
 			window_drag_component.stop_drag()
+	elif what == NOTIFICATION_TRANSLATION_CHANGED:
+		if program_title_label:
+			program_title_label.text = LocalizationManager.tr("PROGRAM_TITLE")
 			
 func _gui_input(event):
 	if event is InputEventMouseButton:

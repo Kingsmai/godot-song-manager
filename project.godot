@@ -43,6 +43,14 @@ enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg", "res://addons/
 
 theme/custom="uid://bj1qmait3dk0"
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://localization/localizations.en.translation", "res://localization/localizations.zh.translation")
+
+[localization_editor]
+
+locales_visibility=[]
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

@@ -21,6 +21,7 @@ layout_mode = 2
 
 [node name="WindowTitleBar" parent="VBoxContainer" instance=ExtResource("2_lquwl")]
 layout_mode = 2
+program_title = "PROGRAM_TITLE"
 
 [node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -53,13 +54,13 @@ unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonPrimaryPlain"
-text = "Add Song"
+text = "BTN_ADD_SONG"
 icon = ExtResource("1_ig7tw")
 
 [node name="SongTitleLabel" type="Label" parent="VBoxContainer/HSplitContainer/SongDetails/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Title"
+text = "Title (Searchable)"
 
 [node name="SongTitleLineEdit" type="LineEdit" parent="VBoxContainer/HSplitContainer/SongDetails/VBoxContainer"]
 unique_name_in_owner = true
@@ -70,7 +71,7 @@ caret_blink = true
 [node name="SongArtistLabel" type="Label" parent="VBoxContainer/HSplitContainer/SongDetails/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Artist"
+text = "Artist (Searchable)"
 
 [node name="SongArtistLineEdit" type="LineEdit" parent="VBoxContainer/HSplitContainer/SongDetails/VBoxContainer"]
 unique_name_in_owner = true
@@ -80,7 +81,7 @@ caret_blink = true
 
 [node name="SongLyricLabel" type="Label" parent="VBoxContainer/HSplitContainer/SongDetails/VBoxContainer"]
 layout_mode = 2
-text = "Lyric"
+text = "SONG_LYRIC"
 
 [node name="SongLyricLineEdit" type="LineEdit" parent="VBoxContainer/HSplitContainer/SongDetails/VBoxContainer"]
 unique_name_in_owner = true
@@ -91,7 +92,7 @@ caret_blink = true
 [node name="SongGenreLabel" type="Label" parent="VBoxContainer/HSplitContainer/SongDetails/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Genre"
+text = "Genre (Searchable)"
 
 [node name="SongGenreLineEdit" type="LineEdit" parent="VBoxContainer/HSplitContainer/SongDetails/VBoxContainer"]
 unique_name_in_owner = true
@@ -101,7 +102,7 @@ caret_blink = true
 
 [node name="SongRemarkLabel" type="Label" parent="VBoxContainer/HSplitContainer/SongDetails/VBoxContainer"]
 layout_mode = 2
-text = "Remarks"
+text = "SONG_REMARKS"
 
 [node name="SongRemarkTextEdit" type="TextEdit" parent="VBoxContainer/HSplitContainer/SongDetails/VBoxContainer"]
 unique_name_in_owner = true
@@ -112,7 +113,7 @@ caret_blink = true
 
 [node name="SongLinkLabel" type="Label" parent="VBoxContainer/HSplitContainer/SongDetails/VBoxContainer"]
 layout_mode = 2
-text = "Link"
+text = "SONG_LINK"
 
 [node name="SongLinkLineEdit" type="LineEdit" parent="VBoxContainer/HSplitContainer/SongDetails/VBoxContainer"]
 unique_name_in_owner = true
@@ -129,14 +130,14 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonPrimary"
-text = "Save"
+text = "BTN_SAVE"
 
 [node name="CancelButton" type="Button" parent="VBoxContainer/HSplitContainer/SongDetails/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
-text = "Cancel"
+text = "BTN_CANCEL"
 
 [node name="DeleteSongWindow" parent="." instance=ExtResource("4_1bvp3")]
 unique_name_in_owner = true

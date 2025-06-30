@@ -39,21 +39,33 @@ var state := State.ADD_SONG:
 		state = value
 		match value:
 			State.EDIT_SONG:
-				save_button.text = "Update"
-				save_button.theme_type_variation = "ButtonSuccess"
-				cancel_button.text = "Delete"
-				cancel_button.theme_type_variation = "ButtonDanger"
-				song_title_label.text = song_title_label_text
-				song_artist_label.text = song_artist_label_text
-				song_genre_label.text = song_genre_label_text
+				if save_button:
+					save_button.text = LocalizationManager.tr(LocalizationKeys.BTN_UPDATE)
+					save_button.theme_type_variation = "ButtonSuccess"
+				if cancel_button:
+					cancel_button.text = LocalizationManager.tr(LocalizationKeys.BTN_DELETE)
+					cancel_button.theme_type_variation = "ButtonDanger"
+				# 2025年6月30日：多语言支持
+				if song_title_label:
+					song_title_label.text = LocalizationManager.tr(LocalizationKeys.SONG_TITLE)
+				if song_artist_label:
+					song_artist_label.text = LocalizationManager.tr(LocalizationKeys.SONG_ARTIST)
+				if song_genre_label:
+					song_genre_label.text = LocalizationManager.tr(LocalizationKeys.SONG_GENRE)
 			State.ADD_SONG:
-				save_button.text = "Save"
-				save_button.theme_type_variation = "ButtonPrimary"
-				cancel_button.text = "Cancel"
-				cancel_button.theme_type_variation = ""
-				song_title_label.text = song_title_label.text + " (Searchable)"
-				song_artist_label.text = song_artist_label.text + " (Searchable)"
-				song_genre_label.text = song_genre_label.text + " (Searchable)"
+				if save_button:
+					save_button.text = LocalizationManager.tr(LocalizationKeys.BTN_SAVE)
+					save_button.theme_type_variation = "ButtonPrimary"
+				if cancel_button:
+					cancel_button.text = LocalizationManager.tr(LocalizationKeys.BTN_CANCEL)
+					cancel_button.theme_type_variation = ""
+				# 2025年6月30日：多语言支持
+				if song_title_label:
+					song_title_label.text = LocalizationManager.tr(LocalizationKeys.SONG_TITLE_SEARCHABLE)
+				if song_artist_label:
+					song_artist_label.text = LocalizationManager.tr(LocalizationKeys.SONG_ARTIST_SEARCHABLE)
+				if song_genre_label:
+					song_genre_label.text = LocalizationManager.tr(LocalizationKeys.SONG_GENRE_SEARCHABLE)
 var sort_by := Song.SortBy.NONE
 var sort_dir := Song.SortDir.NONE
 
@@ -206,3 +218,7 @@ func _clear_fields() -> void:
 	song_link_line_edit.text = ""
 	song_tree.deselect_all()
 	state = State.ADD_SONG
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSLATION_CHANGED:
+		state = state  # Reapply state to update labels
