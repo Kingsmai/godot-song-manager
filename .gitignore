@@ -3,6 +3,6 @@
 .vscode/
 /android/
 
-bin/
+./bin/
 
 *.tmp
