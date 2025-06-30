@@ -1,15 +1,14 @@
-[gd_scene load_steps=9 format=3 uid="uid://dxq82q4s5bep2"]
+[gd_scene load_steps=6 format=3 uid="uid://dxq82q4s5bep2"]
 
 [ext_resource type="Script" uid="uid://dof6osxgniiv3" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="Texture2D" uid="uid://c7rqkiptun7g6" path="res://assets/add.svg" id="1_ig7tw"]
-[ext_resource type="Texture2D" uid="uid://cojnq6w0pnw7j" path="res://assets/windows_icon/minus-square.svg" id="2_5vw27"]
-[ext_resource type="Texture2D" uid="uid://dfv1kkcw6wl81" path="res://assets/windows_icon/maximize.svg" id="3_kek77"]
+[ext_resource type="PackedScene" uid="uid://o5k63tskd60a" path="res://components/window_title_bar.tscn" id="2_lquwl"]
 [ext_resource type="PackedScene" uid="uid://hmjejfiwtjup" path="res://views/delete_song_window.tscn" id="4_1bvp3"]
-[ext_resource type="Texture2D" uid="uid://b34odcl54oeej" path="res://assets/windows_icon/minimize.svg" id="4_4c57u"]
-[ext_resource type="Texture2D" uid="uid://c4txd6j3kud6g" path="res://assets/windows_icon/close.svg" id="5_efxa6"]
 [ext_resource type="Script" uid="uid://ct1mb1gymr2fv" path="res://views/update_checker.gd" id="5_lquwl"]
 
 [node name="WindowContent" type="PanelContainer"]
+clip_children = 2
+clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -20,52 +19,8 @@ script = ExtResource("1_h2yge")
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="WindowTitle" type="PanelContainer" parent="VBoxContainer"]
-unique_name_in_owner = true
+[node name="WindowTitleBar" parent="VBoxContainer" instance=ExtResource("2_lquwl")]
 layout_mode = 2
-theme_type_variation = &"PanelContainerDefaultFlat"
-
-[node name="ProgramTitleLabel" type="Label" parent="VBoxContainer/WindowTitle"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 2.0
-theme_override_colors/font_outline_color = Color(0.4, 0.4, 0.4, 1)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 24
-text = "Song Manager"
-horizontal_alignment = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/WindowTitle"]
-layout_mode = 2
-
-[node name="ExitButton" type="Button" parent="VBoxContainer/WindowTitle/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_type_variation = &"ButtonDanger"
-icon = ExtResource("5_efxa6")
-
-[node name="MaximizeButton" type="Button" parent="VBoxContainer/WindowTitle/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_type_variation = &"ButtonWarning"
-icon = ExtResource("3_kek77")
-
-[node name="RestoreButton" type="Button" parent="VBoxContainer/WindowTitle/HBoxContainer"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_type_variation = &"ButtonWarning"
-icon = ExtResource("4_4c57u")
-
-[node name="MinimizeButton" type="Button" parent="VBoxContainer/WindowTitle/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_type_variation = &"ButtonSuccess"
-icon = ExtResource("2_5vw27")
 
 [node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer"]
 layout_mode = 2

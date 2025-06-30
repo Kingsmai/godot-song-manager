@@ -1,0 +1,72 @@
+[gd_scene load_steps=9 format=3 uid="uid://o5k63tskd60a"]
+
+[ext_resource type="Script" uid="uid://cg4mrkc0vmt03" path="res://components/window_title_bar.gd" id="1_7u1l1"]
+[ext_resource type="Texture2D" uid="uid://c4txd6j3kud6g" path="res://assets/windows_icon/close.svg" id="1_ees7c"]
+[ext_resource type="Texture2D" uid="uid://dfv1kkcw6wl81" path="res://assets/windows_icon/maximize.svg" id="2_7u1l1"]
+[ext_resource type="Script" uid="uid://21xvru6g8ou8" path="res://components/window_drag_component.gd" id="2_61tw4"]
+[ext_resource type="Script" uid="uid://fc8dd01lwcpk" path="res://components/window_resize_component.gd" id="2_xginl"]
+[ext_resource type="Texture2D" uid="uid://b34odcl54oeej" path="res://assets/windows_icon/minimize.svg" id="3_xginl"]
+[ext_resource type="Script" uid="uid://lf5avme0w45q" path="res://components/window_state_component.gd" id="4_35qh1"]
+[ext_resource type="Texture2D" uid="uid://cojnq6w0pnw7j" path="res://assets/windows_icon/minus-square.svg" id="4_61tw4"]
+
+[node name="WindowTitleBar" type="PanelContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 56.0
+grow_horizontal = 2
+theme_type_variation = &"PanelContainerDefaultFlat"
+script = ExtResource("1_7u1l1")
+
+[node name="WindowDragComponent" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_61tw4")
+
+[node name="WindowResizeComponent" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_xginl")
+
+[node name="WindowStateComponent" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_35qh1")
+
+[node name="ProgramTitleLabel" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+theme_override_colors/font_outline_color = Color(0.4, 0.4, 0.4, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 24
+text = "Song Manager"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="ExitButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_type_variation = &"ButtonDanger"
+icon = ExtResource("1_ees7c")
+
+[node name="MaximizeButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_type_variation = &"ButtonWarning"
+icon = ExtResource("2_7u1l1")
+
+[node name="RestoreButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_type_variation = &"ButtonWarning"
+icon = ExtResource("3_xginl")
+
+[node name="MinimizeButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_type_variation = &"ButtonSuccess"
+icon = ExtResource("4_61tw4")

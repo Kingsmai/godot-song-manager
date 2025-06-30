@@ -1,8 +1,6 @@
 @tool
 extends PanelContainer
 
-@onready var window_title: PanelContainer = %WindowTitle
-
 @onready var add_song_button: Button = %AddSongButton
 
 @onready var song_tree: Tree = %SongTree
@@ -28,12 +26,6 @@ var song_genre_label_text: String
 @onready var delete_song_window: DeleteSongWindow = %DeleteSongWindow
 #@export_tool_button("Dev Refresh", "res://assets/flag.svg")
 #var editor_dev_refresh_btn = dev_refresh
-
-# Window Controls
-@onready var exit_button: Button = %ExitButton
-@onready var maximize_button: Button = %MaximizeButton
-@onready var restore_button: Button = %RestoreButton
-@onready var minimize_button: Button = %MinimizeButton
 
 const DELETE_ICON = preload("res://assets/delete.svg")
 
@@ -192,7 +184,6 @@ func _ready() -> void:
 	song_genre_line_edit.text_changed.connect(_on_song_details_edited)
 	cancel_button.pressed.connect(_on_cancel_button_pressed)
 	delete_song_window.confirmed.connect(_on_delete_song_window_confirmed)
-	_setup_window_control()
 	song_title_label_text = song_title_label.text
 	song_artist_label_text = song_artist_label.text
 	song_genre_label_text = song_genre_label.text
@@ -215,48 +206,3 @@ func _clear_fields() -> void:
 	song_link_line_edit.text = ""
 	song_tree.deselect_all()
 	state = State.ADD_SONG
-
-func _on_window_title_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.double_click:
-			if get_window().mode == Window.MODE_MAXIMIZED:
-				get_window().mode = Window.MODE_WINDOWED
-				maximize_button.show()
-				restore_button.hide()
-			else:
-				get_window().mode = Window.MODE_MAXIMIZED
-				restore_button.show()
-				maximize_button.hide()
-		elif event.pressed:
-			get_window().start_drag()
-
-## 无边框窗口
-func _setup_window_control() -> void:
-	window_title.gui_input.connect(_on_window_title_gui_input)
-	
-	exit_button.pressed.connect(func():
-		var tween := create_tween()
-		tween.tween_property(self, "modulate:a", 0.0, 0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-		tween.tween_callback(func(): get_tree().quit())
-	)
-
-	maximize_button.pressed.connect(func():
-		get_window().mode = Window.MODE_MAXIMIZED
-		restore_button.show()
-		maximize_button.hide()
-	)
-
-	restore_button.pressed.connect(func():
-		get_window().mode = Window.MODE_WINDOWED
-		maximize_button.show()
-		restore_button.hide()
-	)
-
-	minimize_button.pressed.connect(func():
-		var tween := create_tween()
-		tween.tween_property(self, "modulate:a", 0.0, 0.2)
-		tween.tween_callback(func():
-			get_window().mode = Window.MODE_MINIMIZED
-			self.modulate.a = 1.0  # 恢复时立即可见
-		)
-	)
